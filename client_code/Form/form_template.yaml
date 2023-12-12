@@ -26,10 +26,11 @@ components:
     properties: {}
     type: DropDown
     layout_properties: {grid_position: 'BEVLKE,WCWCMS'}
-  - name: spacer_1
-    properties: {height: 32}
-    type: Spacer
-    layout_properties: {grid_position: 'BEVLKE,BXIHYI'}
+    event_bindings: {change: drop_down_language_change}
+  - name: link_epub
+    properties: {}
+    type: Link
+    layout_properties: {grid_position: 'BEVLKE,WADRWH'}
   - name: spacer_6
     properties: {height: 32}
     type: Spacer
