@@ -29,5 +29,5 @@ class Form(FormTemplate):
 
   def button_1_get_epub_click(self, **event_args):
     """This method is called when the button is clicked"""
-    from bs4 import BeautifulSoup
-    soup = BeautifulSoup(urlopen(self.link_epub.url).read(), "html.parser")
+    html_doc = anvil.server.call('get_epub', self.link_epub.text)
+    self.label_1_get_epub.text = html_doc
