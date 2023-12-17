@@ -26,3 +26,8 @@ class Form(FormTemplate):
   def link_jworg_click(self, **event_args):
     """This method is called when the link is clicked"""
     pass
+
+  def button_1_get_epub_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(urlopen(self.link_epub.url).read(), "html.parser")

@@ -41,6 +41,7 @@ components:
     properties: {text: Get Epub, role: filled-button, align: left}
     type: Button
     layout_properties: {grid_position: 'ALZMYN,RDSKUR'}
+    event_bindings: {click: button_1_get_epub_click}
   - name: label_2
     properties: {text: -or-, bold: true, align: center, role: title}
     type: Label
