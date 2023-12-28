@@ -29,5 +29,9 @@ class Form(FormTemplate):
 
   def button_download_page_click(self, **event_args):
     """This method is called when the button is clicked"""
-    issues = anvil.server.call('get_epub', self.link_epub.text)
+    issues = anvil.server.call('get_epub_issues', self.link_epub.text)
     self.drop_down_issues.items = issues
+
+  def button_process_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
