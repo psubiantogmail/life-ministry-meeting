@@ -36,3 +36,8 @@ class Form(FormTemplate):
     """This method is called when the button is clicked"""
     excel_file = anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
     anvil.media.download(excel_file)
+
+  def button_upload_to_sql_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    result = anvil.server.call('push_to_azure')
+    self.label_upload_to_sql.text = result
