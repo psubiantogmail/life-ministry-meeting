@@ -8,6 +8,8 @@ import locale
 import re
 import time
 import pyodbc
+import csv
+from anvil import Link
 
 from openpyxl import Workbook
 from epub_conversion.utils import open_book, convert_epub_to_lines
@@ -152,7 +154,18 @@ def create_workbook():
 
   wb.save(excel_file_name)
 
-  media = anvil.media.from_file(excel_file_name)
+  sh = wb.active # was .get_active_sheet()
+  with open('mwb.csv', 'w', newline="") as file_handle:
+    csv_writer = csv.writer(file_handle)
+    for row in sh.iter_rows(): # generator; was sh.rows
+        csv_writer.writerow([cell.value for cell in row])
+
+  media = anvil.media.from_file("mwb.csv", 'text/csv')
+  m = anvil.BlobMedia('text/plain', b'Hello, world!', name='hello.txt')
+  media_link = Link(text="mwb link", url=m)
+  print(m)
+  print(media)
+  print(media_link)
 
   return media
 

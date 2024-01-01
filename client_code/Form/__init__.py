@@ -1,6 +1,8 @@
 from ._anvil_designer import FormTemplate
 from anvil import *
 import anvil.server
+import time
+
 
 class Form(FormTemplate):
   def __init__(self, **properties):
@@ -34,8 +36,14 @@ class Form(FormTemplate):
 
   def button_process_click(self, **event_args):
     """This method is called when the button is clicked"""
-    excel_file = anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
-    anvil.media.download(excel_file)
+    csv = anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
+    while not csv.is_completed():
+         time.sleep(1)
+     
+    anvil.media.download(csv.get_return_value())
+
+    # self.link_process.url = csv_link.url
+    # self.link_process.text = "4. CSV file"
 
   def button_upload_to_sql_click(self, **event_args):
     """This method is called when the button is clicked"""

@@ -58,9 +58,9 @@ components:
     properties: {}
     type: DropDown
     layout_properties: {grid_position: 'PLSIRD,BLWHIW'}
-  - name: label_3
+  - name: link_process
     properties: {role: title, text: 4. Process}
-    type: Label
+    type: Link
     layout_properties: {grid_position: 'YAKSQG,CMSABN'}
   - name: button_process
     properties: {text: Process, role: filled-button}
