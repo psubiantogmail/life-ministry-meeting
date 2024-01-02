@@ -170,6 +170,12 @@ def create_workbook():
   return media
 
 
+@anvil.server.callable
+def retrieve_csv():
+  m = anvil.BlobMedia('text/plain', b'Hello, world!', name='hello.txt')
+  return m
+
+
 def push_to_azure():
     # Send directly to Azure
   server = f'publisherscheduler1.database.windows.net'
