@@ -37,10 +37,7 @@ class Form(FormTemplate):
   def button_process_click(self, **event_args):
     """This method is called when the button is clicked"""
     csv = anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
-    while not csv.is_completed():
-         time.sleep(1)
-     
-    anvil.media.download(csv.get_return_value())
+    # anvil.media.download(csv)
 
     # self.link_process.url = csv_link.url
     # self.link_process.text = "4. CSV file"

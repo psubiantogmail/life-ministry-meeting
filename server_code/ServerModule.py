@@ -15,7 +15,109 @@ from openpyxl import Workbook
 from epub_conversion.utils import open_book, convert_epub_to_lines
 
 
-def create_workbook():
+@anvil.server.callable
+def retrieve_csv():
+  m = anvil.BlobMedia('text/plain', b'Hello, world!', name='hello.txt')
+  return m
+
+
+def push_to_azure():
+    # Send directly to Azure
+  server = f'publisherscheduler1.database.windows.net'
+  database = 'scheduler'
+  username = 'indonesianphiladelphiapausa'
+  password = '2033Ellsworth.'
+  connstr = f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+  cnxn = pyodbc.connect(connstr)
+  cursor = cnxn.cursor()
+
+  task_type = {"Pembacaan Alkitab": 1,
+              "Pengabaran": 2,
+              "Kunjungan Kembali": 3,
+              "Pelajaran Alkitab": 4,
+              "Khotbah": 5,
+              "Video": 6,
+              "Pembahasan": 7,
+              "Khotbah KK": 8,
+              "Pelajaran Alkitab Sidang": 9,
+              "Ketua": 11,
+              "Permata Rohani": 12,
+              "Memulai Percakapan": 13,
+              "Melakukan Kunjungan Kembali": 14,
+              "Menjadikan Murid": 15,
+              "Menjelaskan Kepercayaan Saudara": 16,
+              "Kebutuhan Setempat": 17}
+
+  for row in ws.rows:
+      training_id_value = "NULL"
+      if len(row[6].value) > 0:
+          training_id_value = row[6].value.split()[2]
+      task_id_value = task_type.get(row[5].value)
+      if task_id_value is None:
+          task_id_value = 0
+
+      sqlcmd1 = (
+          f"IF NOT EXISTS (select id from slots where datediff(day, begintime, '{row[0].value.strftime('%Y-%m-%d')}')=0 "
+          f" AND tasktypeid = {str(task_id_value)} ")
+      if training_id_value == "NULL":
+          sqlcmd2 = (f" AND trainingid IS NULL) ")
+      else:
+          sqlcmd2 = (f" AND trainingid = {training_id_value}) ")
+
+      sqlcmd3 = (f"BEGIN "
+                f"insert into slots (projectid, begintime, endtime, isactive, description, tasktypeid, trainingid) "
+                f"values (1"
+                f", '{row[0].value.strftime('%m/%d/%Y')}'"
+                f", '{row[0].value.strftime('%m/%d/%Y')}'"
+                f", 1 "
+                f", '{row[8].value}'"
+                f", {str(task_id_value)}"
+                f", {training_id_value}) "
+                f"END"
+                )
+      cursor.execute(sqlcmd1 + sqlcmd2 + sqlcmd3)
+      cnxn.commit()
+
+  cursor.close()
+  cnxn.close()
+
+  return
+
+
+@anvil.server.callable
+def get_epub_issues(site):
+  if not site:
+    site = "https://www.jw.org/id/perpustakaan/jw-lembar-pelajaran/"
+
+  soup = BeautifulSoup(urlopen(site).read(), "html.parser")
+
+  mwb_epub_issues = [i.get("data-issuedate") for i in soup.find_all("a", {"data-preselect": "epub"})]
+
+  return mwb_epub_issues
+
+@anvil.server.callable
+def get_epub(site, issue):
+  soup = BeautifulSoup(urlopen(site).read(), "html.parser")
+
+  mwb_epub_issues = [
+    {
+      "issue": i.get("data-issuedate"), 
+      "url": i.get("data-jsonurl")
+    } for i in soup.find_all("a", {"data-preselect": "epub", "data-issuedate": f"{issue}"})]
+  
+  for i in mwb_epub_issues:
+    download_json = json.load(urlopen(i.get('url')))
+  
+  if download_json:
+    file_url = download_json.get('files').get('IN').get('EPUB')[0].get('file').get('url')
+  
+  if not file_url:
+    return
+
+  # Here we're downloading the epub from the site
+  file_name = "mwb.epub"
+  urlretrieve(file_url, file_name)
+  
   book = open_book("mwb.epub")
   lines = convert_epub_to_lines(book)
 
@@ -154,121 +256,17 @@ def create_workbook():
 
   wb.save(excel_file_name)
 
+  csv_data = [{}]
   sh = wb.active # was .get_active_sheet()
   with open('mwb.csv', 'w', newline="") as file_handle:
     csv_writer = csv.writer(file_handle)
     for row in sh.iter_rows(): # generator; was sh.rows
         csv_writer.writerow([cell.value for cell in row])
+        csv_data.append({'week_of': row[0], 'assignee': row[1], 'slot': row[5], 'training': row[6], 'description': row[7]} )
 
   media = anvil.media.from_file("mwb.csv", 'text/csv')
-  m = anvil.BlobMedia('text/plain', b'Hello, world!', name='hello.txt')
-  media_link = Link(text="mwb link", url=m)
-  print(m)
-  print(media)
-  print(media_link)
 
-  return media
+  return csv_data
 
-
-@anvil.server.callable
-def retrieve_csv():
-  m = anvil.BlobMedia('text/plain', b'Hello, world!', name='hello.txt')
-  return m
-
-
-def push_to_azure():
-    # Send directly to Azure
-  server = f'publisherscheduler1.database.windows.net'
-  database = 'scheduler'
-  username = 'indonesianphiladelphiapausa'
-  password = '2033Ellsworth.'
-  connstr = f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
-  cnxn = pyodbc.connect(connstr)
-  cursor = cnxn.cursor()
-
-  task_type = {"Pembacaan Alkitab": 1,
-              "Pengabaran": 2,
-              "Kunjungan Kembali": 3,
-              "Pelajaran Alkitab": 4,
-              "Khotbah": 5,
-              "Video": 6,
-              "Pembahasan": 7,
-              "Khotbah KK": 8,
-              "Pelajaran Alkitab Sidang": 9,
-              "Ketua": 11,
-              "Permata Rohani": 12,
-              "Memulai Percakapan": 13,
-              "Melakukan Kunjungan Kembali": 14,
-              "Menjadikan Murid": 15,
-              "Menjelaskan Kepercayaan Saudara": 16,
-              "Kebutuhan Setempat": 17}
-
-  for row in ws.rows:
-      training_id_value = "NULL"
-      if len(row[6].value) > 0:
-          training_id_value = row[6].value.split()[2]
-      task_id_value = task_type.get(row[5].value)
-      if task_id_value is None:
-          task_id_value = 0
-
-      sqlcmd1 = (
-          f"IF NOT EXISTS (select id from slots where datediff(day, begintime, '{row[0].value.strftime('%Y-%m-%d')}')=0 "
-          f" AND tasktypeid = {str(task_id_value)} ")
-      if training_id_value == "NULL":
-          sqlcmd2 = (f" AND trainingid IS NULL) ")
-      else:
-          sqlcmd2 = (f" AND trainingid = {training_id_value}) ")
-
-      sqlcmd3 = (f"BEGIN "
-                f"insert into slots (projectid, begintime, endtime, isactive, description, tasktypeid, trainingid) "
-                f"values (1"
-                f", '{row[0].value.strftime('%m/%d/%Y')}'"
-                f", '{row[0].value.strftime('%m/%d/%Y')}'"
-                f", 1 "
-                f", '{row[8].value}'"
-                f", {str(task_id_value)}"
-                f", {training_id_value}) "
-                f"END"
-                )
-      cursor.execute(sqlcmd1 + sqlcmd2 + sqlcmd3)
-      cnxn.commit()
-
-  cursor.close()
-  cnxn.close()
-
-  return
-
-
-@anvil.server.callable
-def get_epub_issues(site):
-  if not site:
-    site = "https://www.jw.org/id/perpustakaan/jw-lembar-pelajaran/"
-
-  soup = BeautifulSoup(urlopen(site).read(), "html.parser")
-
-  mwb_epub_issues = [i.get("data-issuedate") for i in soup.find_all("a", {"data-preselect": "epub"})]
-
-  return mwb_epub_issues
-
-@anvil.server.callable
-def get_epub(site, issue):
-  soup = BeautifulSoup(urlopen(site).read(), "html.parser")
-
-  mwb_epub_issues = [
-    {
-      "issue": i.get("data-issuedate"), 
-      "url": i.get("data-jsonurl")
-    } for i in soup.find_all("a", {"data-preselect": "epub", "data-issuedate": f"{issue}"})]
-  
-  for i in mwb_epub_issues:
-    download_json = json.load(urlopen(i.get('url')))
-  
-  if download_json:
-    file_url = download_json.get('files').get('IN').get('EPUB')[0].get('file').get('url')
-  
-  if file_url:
-    file_name = "mwb.epub"
-    urlretrieve(file_url, file_name)
-    excel_file = create_workbook()
 
 
