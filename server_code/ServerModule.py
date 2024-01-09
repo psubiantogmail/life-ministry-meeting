@@ -262,10 +262,10 @@ def get_epub(site, issue):
     csv_writer = csv.writer(file_handle)
     for row in sh.iter_rows(): # generator; was sh.rows
         csv_writer.writerow([cell.value for cell in row])
-        csv_data.append({'week_of': row[0], 'assignee': row[1], 'slot': row[5], 'training': row[6], 'description': row[7]} )
+        csv_data.append({'week_of': row[0].value, 'person': row[1].value, 'slot': row[5].value, 'training': row[6].value, 'description': row[9].value} )
 
   media = anvil.media.from_file("mwb.csv", 'text/csv')
-
+  print(csv_data)
   return csv_data
 
 
