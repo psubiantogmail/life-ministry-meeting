@@ -39,6 +39,8 @@ class Form(FormTemplate):
     csv = anvil.server.call('get_epub', self.link_epub.text, self.drop_down_issues.selected_value)
     # anvil.media.download(csv)
 
+    self.repeating_panel.items = csv
+
     # self.link_process.url = csv_link.url
     # self.link_process.text = "4. CSV file"
 
@@ -46,13 +48,3 @@ class Form(FormTemplate):
     """This method is called when the button is clicked"""
     result = anvil.server.call('push_to_azure')
     self.label_upload_to_sql.text = result
-
-  def button_1_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    result = anvil.server.call("retrieve_csv")
-
-    with result as file:
-      
-
-    
-    anvil.media.download(result)
