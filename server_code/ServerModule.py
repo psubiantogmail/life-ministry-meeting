@@ -265,7 +265,7 @@ def get_epub(site, issue):
         csv_data.append({'week_of': row[0], 'assignee': row[1], 'slot': row[5], 'training': row[6], 'description': row[7]} )
 
   media = anvil.media.from_file("mwb.csv", 'text/csv')
-
+  print(csv_data)
   return csv_data
 
 
