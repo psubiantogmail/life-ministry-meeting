@@ -74,9 +74,11 @@ components:
   - name: data_grid_result
     properties:
       columns:
-      - {id: JKSDUP, title: Column 1, data_key: column_1}
-      - {id: VJQQOR, title: Column 2, data_key: column_2}
-      - {id: OJLQEN, title: Column 3, data_key: column_3}
+      - {id: JKSDUP, title: Week of, data_key: week_of, width: 150, expand: false}
+      - {id: VJQQOR, title: Assignee, data_key: person, width: 111, expand: false}
+      - {id: OJLQEN, title: Slot, data_key: slot, width: 125, expand: false}
+      - {id: NEBCHE, data_key: training, title: Training, width: 139, expand: false}
+      - {id: BWUFXW, data_key: description, title: Description}
       visible: true
       spacing_below: medium
       spacing_above: medium
