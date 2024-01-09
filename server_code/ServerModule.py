@@ -21,7 +21,7 @@ def retrieve_csv():
   return m
 
 
-def push_to_azure():
+def push_to_azure(data):
     # Send directly to Azure
   server = f'publisherscheduler1.database.windows.net'
   database = 'scheduler'
@@ -268,5 +268,16 @@ def get_epub(site, issue):
   print(csv_data)
   return csv_data
 
+
+@anvil.server.callable
+def get_csv_file(data):
+  with open('mwb.csv', 'w', newline="") as file_handle:
+    csv_writer = csv.writer(file_handle)
+    for row in data: 
+        csv_writer.writerow([cell.value for cell in row])
+  
+  media = anvil.media.from_file("mwb.csv", 'text/csv')
+  
+  return media
 
 

@@ -38,18 +38,14 @@ components:
     type: Label
     layout_properties: {grid_position: 'ALZMYN,AHKVJX'}
   - name: button_download_page
-    properties: {text: Download, role: filled-button, align: center}
+    properties: {text: Get Issues, role: filled-button, align: center}
     type: Button
     layout_properties: {grid_position: 'ALZMYN,RDSKUR'}
     event_bindings: {click: button_download_page_click}
   - name: label_2
-    properties: {text: -or-, bold: true, align: center, role: title}
+    properties: {text: '', bold: true, align: center, role: title}
     type: Label
     layout_properties: {grid_position: 'ALZMYN,QIGPBU'}
-  - name: file_loader_1
-    properties: {role: filled-button}
-    type: FileLoader
-    layout_properties: {grid_position: 'ALZMYN,VPUTEW'}
   - name: label_select_month
     properties: {role: title, text: 3. Select issue date}
     type: Label
@@ -71,6 +67,11 @@ components:
     properties: {text: 'Result :'}
     type: Label
     layout_properties: {grid_position: 'AYXRXJ,BMYHGX'}
+  - name: outlined_button_download_csv
+    properties: {text: Download as CSV, role: outlined-button}
+    type: Button
+    layout_properties: {grid_position: 'AYXRXJ,PGOULM'}
+    event_bindings: {click: outlined_button_download_csv_click}
   - name: data_grid_result
     properties:
       columns:

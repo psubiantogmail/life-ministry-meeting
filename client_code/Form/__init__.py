@@ -46,5 +46,12 @@ class Form(FormTemplate):
 
   def button_upload_to_sql_click(self, **event_args):
     """This method is called when the button is clicked"""
-    result = anvil.server.call('push_to_azure')
+    result = anvil.server.call('push_to_azure', self.repeating_panel.items)
     self.label_upload_to_sql.text = result
+
+  def outlined_button_download_csv_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    csv_file = anvil.server.call('get_csv_file', self.data_grid_result.items)
+    anvil.media.download(csv_file)
+
+    
