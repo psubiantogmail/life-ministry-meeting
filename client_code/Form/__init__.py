@@ -50,4 +50,9 @@ class Form(FormTemplate):
   def button_1_click(self, **event_args):
     """This method is called when the button is clicked"""
     result = anvil.server.call("retrieve_csv")
+
+    with result as file:
+      
+
+    
     anvil.media.download(result)
