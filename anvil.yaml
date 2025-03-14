@@ -1,14 +1,13 @@
-dependencies: []
-services:
-- source: /runtime/services/tables.yml
-  client_config: {}
-  server_config: {}
-startup: {type: form, module: Form}
-package_name: Life_Ministry_Meeting
 allow_embedding: false
+dependencies: []
+metadata: {description: Extracting the information from epub and push to Sql, title: Life Ministry Meeting Data Extraction}
 name: Life Ministry Meeting
-runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
-  server_spec: null}
-metadata: {title: Life Ministry Meeting Data Extraction, description: Extracting the information from epub and push to Sql}
-startup_form: null
+package_name: Life_Ministry_Meeting
 renamed: true
+runtime_options: {client_version: '3', server_spec: null, server_version: python3-sandbox, version: 2}
+services:
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/tables.yml
+startup: {module: Form, type: form}
+startup_form: null

@@ -51,7 +51,7 @@ class Form(FormTemplate):
 
   def outlined_button_download_csv_click(self, **event_args):
     """This method is called when the button is clicked"""
-    csv_file = anvil.server.call('get_csv_file', self.data_grid_result.items)
+    csv_file = anvil.server.call('get_csv_file', self.repeating_panel.items)
     anvil.media.download(csv_file)
 
     

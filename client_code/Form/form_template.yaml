@@ -1,119 +1,118 @@
-is_package: true
-container:
-  type: HtmlTemplate
-  properties: {html: '@theme:standard-page.html'}
 components:
-- type: ColumnPanel
-  properties: {col_widths: '{}'}
-  name: content_panel
-  layout_properties: {slot: default}
-  components:
-  - name: label_1
-    properties: {text: Life Ministry Epub Import, bold: true, role: headline, spacing_below: large,
-      spacing_above: large, align: center}
+- components:
+  - layout_properties: {grid_position: 'EKVUDJ,CRRVKN'}
+    name: label_1
+    properties: {align: center, bold: true, role: headline, spacing_above: large, spacing_below: large, text: Life Ministry Epub Import}
     type: Label
-    layout_properties: {grid_position: 'EKVUDJ,CRRVKN'}
-  - name: label_description
-    properties: {text: Utility to import Epub data into excel to help scheduling Life and Ministry Meeting for midweek meeting of Jehovah's Witnesses,
-      role: title}
+  - layout_properties: {grid_position: 'WUNPQC,TDMYRZ'}
+    name: label_description
+    properties: {role: title, text: Utility to import Epub data into excel to help scheduling Life and Ministry Meeting for midweek meeting of Jehovah's Witnesses}
     type: Label
-    layout_properties: {grid_position: 'WUNPQC,TDMYRZ'}
-  - name: label_language
+  - layout_properties: {grid_position: 'BEVLKE,GDAXUJ'}
+    name: label_language
     properties: {role: title, text: 1. Choose a language}
     type: Label
-    layout_properties: {grid_position: 'BEVLKE,GDAXUJ'}
-  - name: drop_down_language
+  - event_bindings: {change: drop_down_language_change}
+    layout_properties: {grid_position: 'BEVLKE,WCWCMS'}
+    name: drop_down_language
     properties: {}
     type: DropDown
-    layout_properties: {grid_position: 'BEVLKE,WCWCMS'}
-    event_bindings: {change: drop_down_language_change}
-  - name: link_epub
-    properties: {text: link to epub page here, col_spacing: none}
+  - layout_properties: {full_width_row: true, grid_position: 'BEVLKE,WADRWH'}
+    name: link_epub
+    properties: {col_spacing: none, text: link to epub page here}
     type: Link
-    layout_properties: {grid_position: 'BEVLKE,WADRWH', full_width_row: true}
-  - name: label_get_epub
-    properties: {text: '2. Download from site
-
-        ', role: title}
+  - layout_properties: {grid_position: 'ALZMYN,AHKVJX'}
+    name: label_get_epub
+    properties:
+      role: title
+      text: |
+        2. Download from site
     type: Label
-    layout_properties: {grid_position: 'ALZMYN,AHKVJX'}
-  - name: button_download_page
-    properties: {text: Get Issues, role: filled-button, align: center}
-    type: Button
+  - event_bindings: {click: button_download_page_click}
     layout_properties: {grid_position: 'ALZMYN,RDSKUR'}
-    event_bindings: {click: button_download_page_click}
-  - name: label_2
-    properties: {text: '', bold: true, align: center, role: title}
+    name: button_download_page
+    properties: {align: center, role: filled-button, text: Get Issues}
+    type: Button
+  - layout_properties: {grid_position: 'ALZMYN,QIGPBU'}
+    name: label_2
+    properties: {align: center, bold: true, role: title, text: ''}
     type: Label
-    layout_properties: {grid_position: 'ALZMYN,QIGPBU'}
-  - name: label_select_month
+  - layout_properties: {grid_position: 'PLSIRD,MPWEJI'}
+    name: label_select_month
     properties: {role: title, text: 3. Select issue date}
     type: Label
-    layout_properties: {grid_position: 'PLSIRD,MPWEJI'}
-  - name: drop_down_issues
+  - layout_properties: {grid_position: 'PLSIRD,BLWHIW'}
+    name: drop_down_issues
     properties: {}
     type: DropDown
-    layout_properties: {grid_position: 'PLSIRD,BLWHIW'}
-  - name: link_process
+  - layout_properties: {grid_position: 'YAKSQG,CMSABN'}
+    name: link_process
     properties: {role: title, text: 4. Process}
     type: Link
-    layout_properties: {grid_position: 'YAKSQG,CMSABN'}
-  - name: button_process
-    properties: {text: Process, role: filled-button}
-    type: Button
+  - event_bindings: {click: button_process_click}
     layout_properties: {grid_position: 'YAKSQG,XJIGCG'}
-    event_bindings: {click: button_process_click}
-  - name: label_result
+    name: button_process
+    properties: {role: filled-button, text: Process}
+    type: Button
+  - layout_properties: {grid_position: 'AYXRXJ,BMYHGX'}
+    name: label_result
     properties: {text: 'Result :'}
     type: Label
-    layout_properties: {grid_position: 'AYXRXJ,BMYHGX'}
-  - name: outlined_button_download_csv
-    properties: {text: Download as CSV, role: outlined-button}
-    type: Button
+  - event_bindings: {click: outlined_button_download_csv_click}
     layout_properties: {grid_position: 'AYXRXJ,PGOULM'}
-    event_bindings: {click: outlined_button_download_csv_click}
-  - name: data_grid_result
-    properties:
-      columns:
-      - {id: JKSDUP, title: Week of, data_key: week_of, width: 150, expand: false}
-      - {id: VJQQOR, title: Assignee, data_key: person, width: 111, expand: false}
-      - {id: OJLQEN, title: Slot, data_key: slot, width: 125, expand: false}
-      - {id: NEBCHE, data_key: training, title: Training, width: 139, expand: false}
-      - {id: BWUFXW, data_key: description, title: Description}
-      visible: true
-      spacing_below: medium
-      spacing_above: medium
-      background: theme:Secondary Container
-    type: DataGrid
-    components:
+    name: outlined_button_download_csv
+    properties: {role: outlined-button, text: Download as CSV}
+    type: Button
+  - components:
     - name: repeating_panel
       properties: {item_template: Form.RowTemplate}
       type: RepeatingPanel
-    layout_properties: {grid_position: 'VVYONH,GHNEJS', full_width_row: false}
-  - name: label_upload_to_sql
-    properties: {text: '5.', role: title}
+    layout_properties: {full_width_row: false, grid_position: 'VVYONH,GHNEJS'}
+    name: data_grid_result
+    properties:
+      background: theme:Secondary Container
+      columns:
+      - {data_key: week_of, expand: false, id: JKSDUP, title: Week of, width: 150}
+      - {data_key: person, expand: false, id: VJQQOR, title: Assignee, width: 111}
+      - {data_key: slot, expand: false, id: OJLQEN, title: Slot, width: 125}
+      - {data_key: training, expand: false, id: NEBCHE, title: Training, width: 139}
+      - {data_key: description, id: BWUFXW, title: Description}
+      spacing_above: medium
+      spacing_below: medium
+      visible: true
+    type: DataGrid
+  - layout_properties: {grid_position: 'WTVGUY,GGAJTR'}
+    name: label_upload_to_sql
+    properties: {role: title, text: '5.'}
     type: Label
-    layout_properties: {grid_position: 'WTVGUY,GGAJTR'}
-  - name: button_upload_to_sql
-    properties: {text: Upload to Sql, role: filled-button, align: left}
-    type: Button
+  - event_bindings: {click: button_upload_to_sql_click}
     layout_properties: {grid_position: 'WTVGUY,TYRJTC'}
-    event_bindings: {click: button_upload_to_sql_click}
-  - name: spacer_5
+    name: button_upload_to_sql
+    properties: {align: left, role: filled-button, text: Upload to Sql}
+    type: Button
+  - layout_properties: {grid_position: 'WTVGUY,SFOLLK'}
+    name: spacer_5
     properties: {height: 32}
     type: Spacer
-    layout_properties: {grid_position: 'WTVGUY,SFOLLK'}
-  - name: spacer_3
+  - layout_properties: {grid_position: 'WTVGUY,BNCIRT'}
+    name: spacer_3
     properties: {height: 32}
     type: Spacer
-    layout_properties: {grid_position: 'WTVGUY,BNCIRT'}
-- type: FlowPanel
-  properties: {}
-  name: navbar_links
-  layout_properties: {slot: nav-right}
-  components:
-  - name: link_jworg
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
+- components:
+  - event_bindings: {click: link_jworg_click}
+    layout_properties: {}
+    name: link_jworg
     properties: {text: jw.org, url: 'https://www.jw.org/en'}
     type: Link
-    layout_properties: {}
-    event_bindings: {click: link_jworg_click}
+  layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
