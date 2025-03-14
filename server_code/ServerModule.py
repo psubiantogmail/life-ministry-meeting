@@ -1,5 +1,6 @@
 import anvil.server
 import anvil.media
+from anvil import Link
 from urllib.request import urlopen, urlretrieve
 from bs4 import BeautifulSoup
 import json
@@ -9,7 +10,6 @@ import re
 import time
 import pyodbc
 import csv
-from anvil import Link
 
 from openpyxl import Workbook
 from epub_conversion.utils import open_book, convert_epub_to_lines
@@ -217,10 +217,10 @@ def get_epub(site, issue):
       parts_lac = week.find_all("h3", class_="du-color--maroon-600")
       for part in parts_lac:
           part_title_strong = part.find("strong")
+          part_title = ""
           if part_title_strong:
-              part_title = part_title_strong.text.split(".")[1].strip()  # 7. Apakah Saudara Mau Memberikan Kesaksian Tidak Resmi?
-          else:
-              part_title = ""
+            if len(part_title_strong.text.split(".")) >= 2:
+                part_title = part_title_strong.text.split(".")[1].strip()  # 7. Apakah Saudara Mau Memberikan Kesaksian Tidak Resmi?
 
           if len(part_title) == 0:
               continue
